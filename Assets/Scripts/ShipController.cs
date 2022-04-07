@@ -5,33 +5,34 @@ public class ShipController : MonoBehaviour
 {
     private new Rigidbody2D rigidbody;
     private Vector2 movement;
-    public AudioSource shootingSound; //Declaramos la nueva variable de fuente de sonido
+    public AudioSource shootingSound;
+    public GameObject bullet;
 
     public float speed = 1f;
-
-    // Se llama a Start antes de la primera actualización del cuadro
 
     void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    // Update se llama una vez por frame
     void Update()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
         movement = new Vector2(moveHorizontal, 0f);
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
+            //Acá lo importante es aprender la función Instatiate(). En este caso
+            // el primer parámetro el Prefab que queremos instanciar, el segundo
+            // parámetro es la posición donde lo vamos instanciar (en este caso la posición de la nave)
+            // y el tercero es la rotación del Prefab que se está instanciando.
+            Instantiate(bullet, transform.position + Vector3.up, transform.rotation);
             shootingSound.Play();
         }
     }
 
-    // FixedUpdate se llama en cada fixed frame-rate frame. (50 llamadas por segundo, por defecto)
     void FixedUpdate()
     {
-        // Aplica la fuerza al Rigidbody2d
         rigidbody.AddForce(movement * speed * 5f);
     }
 }
